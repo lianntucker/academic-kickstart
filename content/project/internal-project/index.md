@@ -5,8 +5,7 @@ image:
   caption: Photo by rawpixel on Unsplash
   focal_point: Smart
 links:
-summary: Is having friends with social difficulty associated with a
-higher level of depressive symptoms?
+summary: Is having friends with social difficulty associated with a higher level of depressive symptoms?
 tags:
 - adolescence
 - social network analysis
