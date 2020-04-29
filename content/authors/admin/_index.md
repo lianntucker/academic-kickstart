@@ -5,10 +5,10 @@ education:
   courses:
   - course: Ph.D. in Sociology
     institution: Duke University
-    year: In Progress
+    year: Expected 2023
   - course: M.A. in Sociology
     institution: Duke University
-    year: Expected 2020
+    year: 2020
   - course: B.A. in Sociology
     institution: University of California, Davis
     year: 2017
