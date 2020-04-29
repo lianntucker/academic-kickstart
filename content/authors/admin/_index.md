@@ -21,7 +21,7 @@ name: Liann Tucker
 organizations:
 - name: Duke University
   url: "https://sociology.duke.edu"
-role: PhD Student
+role: PhD Candidate
 social:
 - icon: envelope
   icon_pack: fas
@@ -35,5 +35,5 @@ user_groups:
 - Visitors
 ---
 
-Hello! I'm a PhD student at Duke University in the sociology department. My primary research areas are social network analysis and adolescence. I use network analysis to study adolescent mental health and health-risk behaviors. Some specific areas I'm working on now are friendship stability, social status, network structure, and negative ties. I'm a research associate with the Duke Network Analysis Center and a doctoral student affiliate with the International Max Planck Research School for Population, Health, and Data Science (IMPRS-PHDS).
+Hello! I'm a PhD Candidate at Duke University in the sociology department. My primary research areas are social network analysis and adolescence. I use network analysis to study adolescent mental health and health-risk behaviors. Some specific areas I'm working on now are friendship stability, social status, network structure, and negative ties. I'm a research associate with the Duke Network Analysis Center and a doctoral student affiliate with the International Max Planck Research School for Population, Health, and Data Science (IMPRS-PHDS).
 
