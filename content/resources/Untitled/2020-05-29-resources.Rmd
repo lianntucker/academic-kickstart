@@ -1,0 +1,179 @@
+---
+title: R Code for Visualizations
+author: ~
+date: '2020-05-29'
+slug: resources
+categories: []
+tags: [R code]
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2020-05-29T14:07:13-04:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(dev = 'pdf')
+library(ggplot2)
+library(dplyr)
+library(magrittr)
+library(socviz)
+library(broom)
+library(gapminder)
+library(dplyr)
+library(scales)
+library(igraph)
+library(igraphdata)
+library(gtools)
+library(Hmisc)
+library(gridExtra)
+library(hrbrthemes)
+library(mosaicData)
+library(gridExtra)
+
+options(scipen = 999)
+```
+
+
+
+```{r fig 1, echo = TRUE, message = FALSE, warning=FALSE, fig.align='center', fig.cap="Anscombe's quartet (1973). For each box, N =1 1; mean = 7.5, regression: Y = 3+0.5(X); r = 0.82. SE of slope estimate 0.118, t = 4.24; sum of squares (X-X): 100"}
+anscombe.1 <- data.frame(x = anscombe[["x1"]], y = anscombe[["y1"]], Set = "Anscombe Set 1")
+anscombe.2 <- data.frame(x = anscombe[["x2"]], y = anscombe[["y2"]], Set = "Anscombe Set 2")
+anscombe.3 <- data.frame(x = anscombe[["x3"]], y = anscombe[["y3"]], Set = "Anscombe Set 3")
+anscombe.4 <- data.frame(x = anscombe[["x4"]], y = anscombe[["y4"]], Set = "Anscombe Set 4")
+
+anscombe.data <- rbind(anscombe.1, anscombe.2, anscombe.3, anscombe.4)
+
+ggplot(anscombe.data, aes(x = x, y = y)) + 
+  geom_point(color = "black") + 
+  facet_wrap(~Set, ncol = 2) + 
+  geom_smooth(formula = y ~ x, method = "lm", se = FALSE, data = anscombe.data) + 
+  theme_ipsum(base_size =10, 
+              plot_title_size = 10,
+              strip_text_size = 10, 
+              axis_title_size = 10,
+              axis_title_just = "lt") 
+```
+
+
+```{r fig 2, echo = FALSE, message = FALSE, fig.height= 5, fig.width=10, warning=FALSE, fig.align='center', fig.cap= "Example of multi-plots"}
+ggplot(mtcars, aes(y = mpg, x = wt, color = as.factor(cyl))) + 
+  geom_jitter( alpha = 0.7, size = 3) +
+  facet_wrap(~cyl, labeller = label_both)+
+  labs(x = "Weight",
+       y = "Miles per gallon")+
+  guides(color = FALSE) +
+  theme_ipsum(base_size =15, 
+              plot_title_size = 15, 
+              strip_text_size = 15, 
+              axis_title_size = 15,
+              axis_title_just = "lt") 
+```
+
+
+```{r fig 3, echo = FALSE, message = FALSE, fig.height= 5, fig.width=8, warning=FALSE, fig.align='center', fig.cap="Histogram of marriage data participants by age"}
+data(Marriage, package="mosaicData")
+
+ggplot(Marriage, aes(x = age)) +
+  geom_histogram(binwidth = 5, fill = "#00BFC4", color = "black") + 
+  labs(title = "Participants by Age",
+       subtitle = "Binwith = 5",
+       x = "Age",
+       y = "Count") +
+   theme_ipsum(base_size =10, 
+              plot_title_size = 15, 
+              strip_text_size = 15, 
+              axis_title_size = 15,
+              axis_title_just = "lt") 
+```
+
+```{r fig 4, echo = FALSE, message = FALSE, fig.height= 4, fig.width=8, warning=FALSE, fig.align='center', fig.cap="Density plot of marriage data participants by age"}
+ggplot(Marriage, aes(x = age)) +
+  geom_density(fill = "#00BFC4") + 
+  labs(title = "Participants by Age",
+       x = "Age",
+       y = "Density") +
+  scale_x_continuous(breaks = seq(0, 80, 20), 
+                     limits=c(0, 80)) +
+  theme_ipsum(base_size =10, 
+              plot_title_size = 15, 
+              strip_text_size = 15, 
+              axis_title_size = 15,
+              axis_title_just = "lt") 
+```
+
+```{r fig 5, echo = FALSE, message = FALSE, fig.height= 4, fig.width=10, warning=FALSE,fig.align='center', fig.cap="Marraige participants by age and sex"}
+Marriage$prevcount <- as.numeric(Marriage$prevcount)
+
+Marriage$prev_married <- ifelse(Marriage$prevcount >= 1, "Previously Married", "First Marriage")
+
+p1 <- ggplot(Marriage, aes(x = age, fill = person)) +
+  geom_histogram(alpha = 0.6, binwidth = 5)+ 
+  labs(title = "Participants by Age and Gender",
+       subtitle = "Bindwith = 5",
+       x = "Age",
+       y = "Density") +
+  theme_ipsum(base_size =10, 
+              plot_title_size = 15, 
+              strip_text_size = 15, 
+              axis_title_size = 15,
+              axis_title_just = "lt") 
+
+ 
+p2 <- ggplot(Marriage, aes(x = age, fill = person)) +
+  geom_density(alpha = 0.3) + 
+  labs(title = "Participants by Age and Gender",
+       x = "Age",
+       y = "Density") +
+  scale_x_continuous(breaks = seq(0, 80, 20), 
+                     limits=c(0, 80)) +
+  theme_ipsum(base_size =10, 
+              plot_title_size = 15, 
+              strip_text_size = 15, 
+              axis_title_size = 15,
+              axis_title_just = "lt") 
+
+grid.arrange(p1, p2, ncol = 2)
+
+```
+
+
+
+```{r fig 6, echo = FALSE, message = FALSE, fig.height= 5, fig.width=10, warning=FALSE,fig.align='center', fig.cap="Marraige participants by age, sex, and previous marriage"}
+
+ggplot(Marriage, aes(x = age, fill = person)) +
+  geom_histogram(alpha = 0.6, binwidth = 5)+ 
+  facet_wrap(~prev_married) +
+  labs(title = "Participants by Age and Gender",
+       subtitle = "Bindwith = 5",
+       x = "Age",
+       y = "Density") +
+  theme_ipsum(base_size =10, 
+              plot_title_size = 15, 
+              strip_text_size = 15, 
+              axis_title_size = 15,
+              axis_title_just = "lt") 
+
+```
+
+
+```{r fig 7, echo = FALSE, fig.height= 4, fig.width=10, message = FALSE,  warning=FALSE,fig.align='center', fig.cap="Marraige participants by race"}
+ggplot(Marriage, aes(x = race, fill = race)) +
+  geom_bar()+ 
+  labs(title = "Participants by Race",
+       x = "Race",
+       y = "Count") +
+  guides(fill = FALSE) +  
+  theme_ipsum(base_size =10, 
+              plot_title_size = 15, 
+              strip_text_size = 15, 
+              axis_title_size = 15,
+              axis_title_just = "lt") 
+
+```
+
+
